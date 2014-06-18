@@ -99,7 +99,7 @@ typedef struct animal_vtable_type {
     
     // այստեղ կարող են լինել այլ դաշտեր եթե դասը պարունակում է 
     // մեկից ավել վիրտուալ մեթոդներ
-} animal_vtable;
+} animal_vtable_t;
 
 ```
 
@@ -110,14 +110,14 @@ typedef struct animal_type {
     // ուշադրություն դարձրեք այն բանին, 
     // դասը չի պարունակում say մեթոդի ցուցիչ
     // դրա փոխարեն վիրտուալ մեթոդների աղուսյակի օբյեկտ է
-    animal_vtable vtable;
+    animal_vtable_t vtable;
 } animal_t;
 
 
 // Tiger դասի անալոգ 
 typedef struct tiger_type {
     // vtable աղուսյակի օբյեկտ
-    animal_vtable vtable;
+    animal_vtable_t vtable;
     // ժառանգման սիմուլյացիա
     animal_t base;
 } tiger_t;
@@ -125,7 +125,7 @@ typedef struct tiger_type {
 // Lion դասի անալոգ
 typedef struct lion_type {
     // vtable աղուսյակի օբյեկտ
-    animal_vtable vtable;
+    animal_vtable_t vtable;
     // ժառանգման սիմուլյացիա
     animal_t base;
 } lion_t;

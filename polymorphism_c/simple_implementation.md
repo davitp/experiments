@@ -17,20 +17,27 @@
   Իրականացումը C++ով 
   ---
   ```c++
+  // սահմանում ենք Animal դասը 
   class Animal {
   public:
+  	// ուշադրություն դարձրեք, որ say մեթոդը սահմանված է, որպես
+  	// վիրտուալ (virtual բանալի բառով)
 	  virtual void say(){
 		  cout << "Animal says hello!" << endl;	
 	  }
   };
-
+  
+  // սահմանում ենք Tiger դասը ժառանգելով Animal դասից
   class Tiger : public Animal {
   public:
+  	  // քանի որ բազային դասում say()-ը նշված է որպես virtual
+  	  // վերասահմանելիս կարելի է virtual բառը բաց թողնել
 	  virtual void say(){
 		  cout << "Tiger says hello!" << endl;	
 	  }
   };
 
+  // սահմանում ենք Lion դասը ժառանգելով Animal դասից
   class Lion : public Animal {
   public:
 	  virtual void say(){

@@ -14,4 +14,28 @@
 > Animal դասն ունի երկու ժառանգ Tiger և Lion, որոնցում համապատասխանաբար վերասահմանված է say() մեթոդը։ 
 > Խնդիրը կայանում է նրանում, որ պետք է Animal* տիպի ցուցիչով կարողանանք դիմել նաև Tiger և Lion դասերում վերասահմանված say() մեթոդին և էկրանին ստանանք ճիշտ հաղորդագրություն։ 
 
+  Իրականացումը C++ով 
+  ---
+  ```c++
+  class Animal {
+  public:
+	  virtual void say(){
+		  cout << "Animal says hello!" << endl;	
+	  }
+  };
 
+  class Tiger : public Animal {
+  public:
+	  virtual void say(){
+		  cout << "Tiger says hello!" << endl;	
+	  }
+  };
+
+  class Lion : public Animal {
+  public:
+	  virtual void say(){
+		  cout << "Lion says hello!" << endl;	
+	  }
+  };
+
+  ```

@@ -46,3 +46,25 @@
   };
 
   ```
+  
+  Օրինակն իրականացված է։ Մնում է գրենք կիրառությունը։
+  ```c++
+  int main(){
+    // սահմանենք 3 օբյեկտ բազային դասի ցուցիչով 
+    
+    // Animal օբյեկտ Animal* ցուցիչով
+    Animal* animalPtr = new Animal();
+    
+    // Tiger օբյեկտ Animal* ցուցիչով
+    Animal* tigerPtr = new Tiger();
+    
+    // Lion օբյեկտ Animal* ցուցիչով
+    Animal* lionPtr = new Lion();
+    
+    /* say մեթոդի կանչ */
+    animalPtr->say(); // Animal::say()
+    tigerPtr->say(); // Tiger::say()
+    lionPtr->say(); // Lion::say()
+    return 0;
+}
+  ```

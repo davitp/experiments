@@ -91,6 +91,7 @@
 ### Իրականացումը C-ով 
 
 ```c
+// վիրտուալ մեթոդների աղուսյակի նկարագրություն Animal դասի համար
 typedef struct animal_vtable_type {
     // say վիրտուալ մեթոդի ցուցիչի համար նախատեսված դաշտ
     void (*say)();
@@ -102,3 +103,154 @@ typedef struct animal_vtable_type {
 
 ```
 
+Համապատասխան տիպերի հայտարարում։ Այստեղ ինչ֊որ կերպ իրականացված է նաև ժառանգման մեխանիզմը։ 
+```c
+// Animal դասի անալոգ
+typedef struct animal_type {
+    // ուշադրություն դարձրեք այն բանին, 
+    // դասը չի պարունակում say մեթոդի ցուցիչ
+    // դրա փոխարեն վիրտուալ մեթոդների աղուսյակի օբյեկտ է
+    animal_vtable vtable;
+} animal_t;
+
+
+// Tiger դասի անալոգ 
+typedef struct tiger_type {
+    // vtable աղուսյակի օբյեկտ
+    animal_vtable vtable;
+    // ժառանգման սիմուլյացիա
+    animal_t base;
+} tiger_t;
+
+// Lion դասի անալոգ
+typedef struct lion_type {
+    // vtable աղուսյակի օբյեկտ
+    animal_vtable vtable;
+    // ժառանգման սիմուլյացիա
+    animal_t base;
+} lion_t;
+
+// Հարկավոր է նկարագրել նաև վերոնշյալ «դասերի»
+// լռությամբ կառուցիչ (default constructor) ֆունկցիաներ
+
+// Animal-ի համար
+void animal_constructor(animal_t* this);
+
+// Tiger-ի համար
+void tiger_constructor(tiger_t* this);
+
+// Lion-ի համար
+void lion_constructor(lion_t* this);
+
+```
+
+Նկարագրենք say() մեթոդի համապատասխան «վերասահմանումները»
+```c
+void animal_say(void);
+void tiger_say(void);
+void lion_say(void);
+```
+
+Դիտարկենք կիրառությունը, ինչից հետո կվերադառնանք նկարագրված ֆունկցիաների իրականացմանը։
+```c
+int main(void){
+    // Animal օբյեկտի սահմանում
+    animal_t animal;
+    // սկզբնարժեքավորում (default constructor)
+    animal_constructor(&animal);
+
+    // Tiger օբյեկտի սահմանում
+    tiger_t tiger;
+    // սկզբնարժեքավորում (default constructor)
+    tiger_constructor(&tiger);
+
+    // Lion օբյեկտի սահմանում
+    lion_t lion;
+    // սկզբնարժեքավորում (default constructor)
+    lion_constructor(&lion);
+
+    // ստեղծենք երեք ցուցիչ Animal*-ի անալոգով,
+    // որոնք ցույց են տալիս տարբեր տիպի օբյեկտների 
+    // վրա
+    animal_t* animalPtr = (animal_t*) &animal;
+    animal_t* tigerPtr = (animal_t*) &tiger;
+    animal_t* lionPtr = (animal_t*) &lion;
+
+    /* կանչի օրինակներ */
+    
+    printf("Calling Anlimal's say()\n");
+    // Animal::say() կանչ
+    animalPtr->vtable.say();
+    printf("\n");
+
+    printf("Calling Tiger's say()\n");
+    // Tiger::say() կանչ
+    tigerPtr->vtable.say();
+    printf("\n");
+
+    printf("Calling Lion's say()\n");
+    // Lion::say() կանչ
+    lionPtr->vtable.say();
+    printf("\n");
+
+    // ծրագրի հաջող ավարտ
+    return 0;
+}
+```
+
+Ինչպես տեսանք երեք ցուցիչներն էլ բազային տիպի էին (Animal*), սակայն կանչի ժամանակ էկրանին դուրս բերվեցին ճիշտ հաղորդագրություններ։ 
+
+Մնաց դիտարկենք վերը նկարագրված ֆունկցիաների իրականացումները։ 
+```c
+// Animal::say() 
+void animal_say(void){
+    printf("Animal says Hello! (Base)\n");
+}
+
+// Tiger::say() 
+void tiger_say(void){
+    printf("Tiger says Hello! (Derived 1)\n");
+}
+
+// Lion::say() 
+void lion_say(void){
+    printf("Lion says Hello! (Derived 2)\n");
+}
+
+/* կառուցիչների իրականացում */ 
+
+// Animal() կառուցիչ 
+void animal_constructor(animal_t* this){
+    // վիրտուալ մեթոդների աղուսյակի
+    // դաշտերը սկզմբնարժեքավերվում են 
+    // ժառանգ դասերում վերասահմանված 
+    // ֆունկցիաների ցուցիչներով
+    this->vtable.say = animal_say;
+}
+
+// Tiger() կառուցիչ 
+void tiger_constructor(tiger_t* this){
+    // աղուսյակի սկզբնարժեքավորում
+    // tiger_say ցուցիչով
+    this->vtable.say = tiger_say;
+    
+    // «բազային դասի» սկզբնարժեքավորում
+    animal_constructor(&(this->base));
+}
+
+// Lion() կառուցիչ 
+void lion_constructor(lion_t* this){
+    // աղուսյակի սկզբնարժեքավորում
+    // lion_say ցուցիչով
+    this->vtable.say = lion_say;
+    
+    // «բազային դասի» սկզբնարժեքավորում
+    animal_constructor(&(this->base));
+}
+```
+
+Օրինակը թարգմանվել է GCC 4.9֊ով, հետևաբար որոշ մեքենաների վրա այլ կարող են առաջ գալ տարբեր թարգմանության սխալներ, որոնք շատ հեշտ կարելի է ուղղել։ 
+
+Պոլիմորֆիզմի C-ական իրականացում կարելի է տեսնել բազմաթիվ հայտնի գրադարաններում, ինչպիսին է օրինակ GTK-ն։
+
+Այսքանը։

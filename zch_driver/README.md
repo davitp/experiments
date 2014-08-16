@@ -19,7 +19,7 @@ modinfo zch.ko
 sudo insmod zch.ko
 ```
 
-Kernel-ի լոգորը կարդալու համար՝
+Kernel-ի լոգերը կարդալու համար՝
 ```bash
 dmesg | tail
 ```
